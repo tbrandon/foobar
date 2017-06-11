@@ -1,17 +1,14 @@
 language: go
+
+go:
+  - 1.7.x
+  - 1.8.x
+
 before_install:
-  - go get golang.org/x/tools/cmd/vet
-  - go get github.com/modocache/gover
-  - go get github.com/vendor/package/...
+  - go get -t -v ./...
+
 script:
-  # Vet examines Go source code and reports suspicious construct
-  - go vet github.com/vendor/package...
-  # Run the unit tests suite
-  - go test -v ./...
-  # Collect coverage reports
-  - go list -f '{{if len .TestGoFiles}}"go test -coverprofile={{.Dir}}/.coverprofile {{.ImportPath}}"{{end}}' ./... | xargs -i sh -c {}
-  # Merge coverage reports
-  - gover . coverprofile.txt
+  - go test -race -coverprofile=coverage.txt -covermode=atomic
+
 after_success:
-  # Send coverage reports to Codecov
-  - bash < (curl -s https://codecov.io/bash) -f coverprofile.txt
+  - bash <(curl -s https://codecov.io/bash)
