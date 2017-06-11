@@ -14,7 +14,7 @@ func TestAdd(t *testing.T) {
 }
 
 func TestAdd2(t *testing.T) {
-	cmd := exec.Command("socat",
+	cmd := exec.Command("/usr/bin/socat",
 		"pty,raw,echo=0,link=/dev/shm/foo",
 		"pty,raw,echo=0,link=/dev/shm/bar")
 	err := cmd.Start()
